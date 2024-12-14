@@ -1,0 +1,74 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+// 假設 Sequence 類的基本實現
+template <typename T>
+class Sequence {
+    vector<T> data;
+public:
+    Sequence(initializer_list<T> elements) : data(elements) {}
+
+    int getSize() const {
+        return data.size();
+    }
+
+    T get(int index) const {
+        return data[index];
+    }
+};
+
+// SequenceExtensions 類別（已提供）
+template <typename T>
+class SequenceExtensions {
+public:
+    static int indexOfElement(const Sequence<T>& seq, const T& element) {
+        for (int i = 0; i < seq.getSize(); i++) {
+            if (seq.get(i) == element) {
+                return i;  
+            }
+        }
+        return -1;  
+    }
+
+    static int positionOfElement(const Sequence<T>& seq, const T& element) {
+        int index = indexOfElement(seq, element);
+        return (index == -1) ? -1 : index + 1;  
+    }
+};
+
+int main() {
+    // 建立 Sequence 物件
+    Sequence<int> seq = {10, 20, 30, 40, 50};
+
+    // 測試 indexOfElement 和 positionOfElement
+    int searchElement = 30;
+    int index = SequenceExtensions<int>::indexOfElement(seq, searchElement);
+    int position = SequenceExtensions<int>::positionOfElement(seq, searchElement);
+
+    cout << "Testing SequenceExtensions with Sequence of integers:\n";
+    cout << "Sequence: {10, 20, 30, 40, 50}\n";
+    cout << "Searching for element: " << searchElement << "\n";
+
+    if (index != -1) {
+        cout << "Index of element: " << index << "\n";
+        cout << "Position of element: " << position << "\n";
+    } else {
+        cout << "Element not found in the sequence.\n";
+    }
+
+    // 測試一個不存在的元素
+    searchElement = 100;
+    index = SequenceExtensions<int>::indexOfElement(seq, searchElement);
+    position = SequenceExtensions<int>::positionOfElement(seq, searchElement);
+
+    cout << "\nSearching for non-existing element: " << searchElement << "\n";
+    if (index != -1) {
+        cout << "Index of element: " << index << "\n";
+        cout << "Position of element: " << position << "\n";
+    } else {
+        cout << "Element not found in the sequence.\n";
+    }
+
+    return 0;
+}
